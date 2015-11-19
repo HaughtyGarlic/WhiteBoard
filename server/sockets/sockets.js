@@ -47,7 +47,7 @@ var connect = function(boardUrl, board, io) {
       var id = socket.nsp.name.slice(1);
 
       //Update the board with the new stroke.
-      Board.boardModel.update({id: id},{$push: {strokes: finishedStroke} },{upsert:true},function(err, board){
+      Board.boardModel.update({_id: id},{$push: {strokes: finishedStroke} },{upsert:true},function(err, board){
         if(err){ console.log(err); }
         else {
           console.log("Successfully added");

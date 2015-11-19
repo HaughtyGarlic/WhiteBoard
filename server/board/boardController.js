@@ -1,5 +1,5 @@
 var Board = require('../../db/board');
-var handleSocket = require('../sockets');
+var handleSocket = require('../sockets/sockets.js');
 
 module.exports = {
 

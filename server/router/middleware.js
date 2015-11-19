@@ -4,6 +4,7 @@ module.exports = function (app, express, io) {
 
   var documentationRouter = express.Router();
   var boardRouter = express.Router();
+  var newBoardRouter = express.Router();
 
   app.use(morgan('dev'));
 
@@ -13,11 +14,12 @@ module.exports = function (app, express, io) {
   
   app.use('/documentation', documentationRouter);
 
-  app.use('/new', boardRouter);
+  app.use('/new', newBoardRouter);
 
-  app.use('/:boardId', boardRouter)
+  app.use('*', boardRouter)
 
   require('../documentation/documentationRouter.js')(documentationRouter);
+  require('../board/newBoardRouter.js')(newBoardRouter);
   require('../board/boardRouter.js')(boardRouter, io);
 
 };

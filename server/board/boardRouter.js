@@ -2,15 +2,14 @@ var boardController = require('./boardController.js');
 
 module.exports = function (app, io) {
 
-  app.route('/new')
-    .get(boardController.createBoard);
-
   app.use('/:id', function(req, res, next) {
+    console.log('trying to get the board');
+    console.log(req.params);
   	req.io = io;
   	next();
   });
 
-  app.route('/:id')
+  app.route('/')
   	.get(boardController.getBoard);
 
 };

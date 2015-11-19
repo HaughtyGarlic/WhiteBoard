@@ -2,7 +2,7 @@
   "name": "spazzinglicorice",
   "version": "0.0.0",
   "description": "Multiplayer Whiteboard",
-  "main": "server.js",
+  "main": "server/server.js",
   "scripts": {
     "test": "mocha ./test/dbTest.js && node ./test/socketTest.js"
   },

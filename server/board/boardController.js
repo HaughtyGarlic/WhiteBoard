@@ -21,12 +21,13 @@ module.exports = {
 
   getBoard: function (req, res, next) {
     console.log('trying to get the board');
-    var id = req.params.id;
+    var id = String(req.params.id);
 
-    console.log(req.params);
-    Board.boardModel.findOne({id: id}, function(err, board) {
+    console.log(id,'hiiiii');
+    Board.boardModel.findOne({_id: id}, function(err, board) {
       // If the board doesn't exist, or the route is invalid,
       // then redirect to the home page.
+      console.log(err, board);
       if (err) {
         res.redirect('/');
       } else {

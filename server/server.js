@@ -8,7 +8,7 @@ var io = require('socket.io')(http);
 
 var port = process.env.PORT || 8080;
 
-require('./router/middleware.js')(server, express, io);
+require('./router/middleware.js')(app, express, io);
 
 http.listen(port, function() {
   console.log('server listening on', port, 'at', new Date());

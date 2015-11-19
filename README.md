@@ -1,3 +1,5 @@
+[![Stories in Ready](https://badge.waffle.io/HaughtyGarlic/WhiteBoard.png?label=ready&title=Ready)](http://waffle.io/HaughtyGarlic/WhiteBoard)
+
 # Coderboard
 [See it live here!](http://hidden-castle-8290.herokuapp.com)
 

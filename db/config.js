@@ -9,6 +9,7 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://coder:radio@ds031651.mongolab.com:31651/coderboard');
 // mongoose.connect(process.env.MONGOLAB_URI);
 if (process.env.NODE_ENV === 'DEV') {
+  console.log('using DEV settings');
   mongoose.connect('mongodb://127.0.0.1');
 } else {
   mongoose.connect('mongodb://127.0.0.1');

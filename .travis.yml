@@ -5,3 +5,6 @@ services:
   - mongodb
 before_script:
   - sleep 15
+script:
+  - node server/server.js &
+  - npm test

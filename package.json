@@ -2,8 +2,9 @@
   "name": "spazzinglicorice",
   "version": "0.0.0",
   "description": "Multiplayer Whiteboard",
-  "main": "server/server.js",
+  "main": "./server/server.js",
   "scripts": {
+    "start": "node ./server/server.js",
     "test": "npm run test-db && npm run test-socket",
     "test-db": "mocha ./test/dbTest.js",
     "test-socket": "mocha ./test/socketTest.js"

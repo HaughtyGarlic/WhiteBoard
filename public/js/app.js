@@ -205,7 +205,7 @@ App.init = function() {
   };
 
   var updatePlayerTime = function(data) {
-    var socketDiff = Date.now() - data.msgTime;
+    var socketDiff = Date.now() - data.msgTime + 30;
 
     console.log('socket transmition lag: '+socketDiff);
 

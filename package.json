@@ -4,8 +4,7 @@
   "description": "Multiplayer Whiteboard",
   "main": "./server/server.js",
   "scripts": {
-    "start": "node ./server/server.js",
-    "test": "npm run test-db && npm run test-socket",
+    "test": "./node_modules/mocha/bin/mocha ./test/test.js",
     "test-db": "mocha ./test/dbTest.js",
     "test-socket": "mocha ./test/socketTest.js"
   },

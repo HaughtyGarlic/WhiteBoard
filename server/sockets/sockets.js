@@ -14,6 +14,9 @@ var connect = function(boardUrl, board, io) {
 
   whiteboard.once('connection', function(socket) {
     // Send the current state of the board to the client immediately on joining.
+
+    console.log('imcoming socket from: '+socket.id);
+
     socket.emit('join', board);
 
     socket.on('start', function(pen) {
@@ -60,6 +63,32 @@ var connect = function(boardUrl, board, io) {
       //Delete the stroke object to make room for the next stroke.
       delete socket.stroke;
     });
+
+    socket.on('music_play_all', function(data) {
+      console.log('someone REALLY loves this shit');
+      socket.emit('music_play', data);
+    });
+
+    socket.on('music_play', function(data) {
+      console.log('someone loves this shit');
+      socket.broadcast.emit('music_play', data);
+    });
+
+    socket.on('music_pause', function(data) {
+      console.log('somone HATES this shit');
+      socket.broadcast.emit('music_pause', data);
+    });
+
+    socket.on('music_request_status', function() {
+      console.log('some noob just got to the room');
+      socket.broadcast.emit('music_request_status', null);
+    });
+
+    socket.on('music_status', function(data) {
+      console.log('i know whats happening in this room');
+      socket.broadcast.emit('music_status', data);
+    });
+    
   });
 };
 

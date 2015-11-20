@@ -11,8 +11,8 @@ $(function() {
   App.init();
 
   // Set up video to be draggable.
-  $('#localVideo').draggable();
-  $('#remoteVideos').draggable();
+  // $('#localVideo').draggable();
+  // $('#remoteVideos').draggable();
 
   // **Mouse Events**
 
@@ -90,6 +90,31 @@ $(function() {
   // If the cursor leaves the canvas whiteboard, simply stop drawing any more elements (by triggering a 'dragend' event).
   App.canvas.on('mouseleave', function(e) {
     App.canvas.trigger('dragend');
+  });
+
+  App.music.addEventListener('play', function(e) {
+    console.log('im playing so funky ass shit');
+
+    App.socket.emit('music_play', getMusicStatus());
+  });
+
+  App.music.addEventListener('pause', function(e) {
+    console.log('hold up hold up, let me tie my shoe');
+    App.socket.emit('music_pause', getMusicStatus());
+  });
+
+  //when the client starts up a room, make a call to get the status from anyone in the room
+  App.socket.emit('music_request_status',null);
+
+  var getMusicStatus = function() {
+    return {
+      currentTime: App.music.currentTime,
+      paused: App.music.paused
+    };
+  };
+
+  $('.playMusic').on('click', function() {
+    App.socket.emit('music_play_all', getMusicStatus());
   });
 
 

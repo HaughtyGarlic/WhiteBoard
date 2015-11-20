@@ -16,19 +16,19 @@ App.init = function() {
   //**Video Chat Functionality** 
 
   // Create a video chat Object.
-  var webrtc = new SimpleWebRTC({
-    // **localVideoEl**: the ID/element DOM element that will hold the current user's video
-    localVideoEl: 'localVideo',
-    // **remoteVideosEl**: the ID/element DOM element that will hold remote videos
-    remoteVideosEl: 'remoteVideos',
-    // **autoRequestMedia**: immediately ask for camera access
-    autoRequestMedia: true
-  });
+  // var webrtc = new SimpleWebRTC({
+  //   // **localVideoEl**: the ID/element DOM element that will hold the current user's video
+  //   localVideoEl: 'localVideo',
+  //   // **remoteVideosEl**: the ID/element DOM element that will hold remote videos
+  //   remoteVideosEl: 'remoteVideos',
+  //   // **autoRequestMedia**: immediately ask for camera access
+  //   autoRequestMedia: true
+  // });
 
-  // The room name is the same as our socket connection.
-  webrtc.on('readyToCall', function() {
-    webrtc.joinRoom(ioRoom);
-  });
+  // // The room name is the same as our socket connection.
+  // webrtc.on('readyToCall', function() {
+  //   webrtc.joinRoom(ioRoom);
+  // });
 
   // **Whiteboard**
 
@@ -143,5 +143,52 @@ App.init = function() {
     App.context.closePath();
     App.isAnotherUserActive = false;
   });
+
+  App.music = $('audio')[0];
+
+  App.socket.on('music_play', function(data) {
+    
+    App.music.play();
+    App.music.currentTime = data.currentTime;
+    
+  });
+
+  App.socket.on('music_pause', function(data) {
+    
+    App.music.pause();
+    App.music.currentTime = data.currentTime;
+
+  });
+
+  App.socket.on('music_request_status', function(data) {
+
+    App.socket.emit('music_status', getMusicStatus());
+
+  });
+
+  App.musicInitialized = false;
+
+  App.socket.on('music_status', function(data) {
+    
+    if(!App.musicInitialized) {
+
+      App.music.currentTime = data.currentTime;
+
+      if(!data.paused) {
+        App.music.play();
+      }
+
+      App.musicInitialized = true;
+
+    }
+
+  });
+
+  var getMusicStatus = function() {
+    return {
+      currentTime: App.music.currentTime,
+      paused: App.music.paused
+    };
+  };
 
 };

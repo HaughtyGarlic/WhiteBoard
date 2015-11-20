@@ -144,25 +144,34 @@ App.init = function() {
     App.isAnotherUserActive = false;
   });
 
+  //RADIO STUFFS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+  App.socket.on('you_are_the_master', function(data) {
+    setInterval(App.updateTheKids, 1000);
+  });
+
   App.music = $('audio')[0];
 
   App.socket.on('music_play', function(data) {
     
     App.music.play();
-    App.music.currentTime = data.currentTime;
+
+    updatePlayerTime(data);
     
   });
 
   App.socket.on('music_pause', function(data) {
     
     App.music.pause();
-    App.music.currentTime = data.currentTime;
+
+    updatePlayerTime(data);
 
   });
 
   App.socket.on('music_request_status', function(data) {
 
-    App.socket.emit('music_status', getMusicStatus());
+    App.updateTheKids();
 
   });
 
@@ -172,23 +181,35 @@ App.init = function() {
     
     if(!App.musicInitialized) {
 
-      App.music.currentTime = data.currentTime;
-
       if(!data.paused) {
         App.music.play();
       }
-
       App.musicInitialized = true;
-
     }
+
+    updatePlayerTime(data);
 
   });
 
-  var getMusicStatus = function() {
+  App.updateTheKids = function() {
+    console.log('I AM THE MASTER, HEAR ME ROAR! '+App.getMusicStatus())
+    App.socket.emit('music_status', App.getMusicStatus());
+  }
+
+  App.getMusicStatus = function() {
     return {
       currentTime: App.music.currentTime,
-      paused: App.music.paused
+      paused: App.music.paused,
+      msgTime: Date.now()
     };
+  };
+
+  var updatePlayerTime = function(data) {
+    var socketDiff = Date.now() - data.msgTime;
+
+    console.log('socket transmition lag: '+socketDiff);
+
+    App.music.currentTime = data.currentTime;
   };
 
 };

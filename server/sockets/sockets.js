@@ -19,6 +19,12 @@ var connect = function(boardUrl, board, io) {
 
     socket.emit('join', board);
 
+    //if there is only one person on the socket, emit a message to tell them they are the dj
+    console.log('ppl in room: '+socket.conn.server.clientsCount);
+    if(Number(socket.conn.server.clientsCount) === 1) {
+      socket.emit('you_are_the_master', null);
+    }
+
     socket.on('start', function(pen) {
 
       // **A stroke is essentially a continous line drawn by the user.**

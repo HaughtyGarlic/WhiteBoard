@@ -48,7 +48,7 @@ App.init = function() {
     var peers = App.webrtc.getPeers();
     console.log(peers);
     if(peers.length === 0) {
-      setInterval(App.updateTheKids, 1000);
+      setInterval(App.updateTheKids, 100);
     }
   });
 
@@ -219,10 +219,12 @@ App.init = function() {
   });
 
   App.updateTheKids = function() {
-    console.log('I AM THE MASTER, HEAR ME ROAR! '+App.getMusicStatus())
-    console.log('peers: ',App.webrtc.getPeers());
-    App.socket.emit('tester_music', App.getMusicStatus());
-    App.webrtc.sendToAll('wut?', App.getMusicStatus());
+    // console.log('I AM THE MASTER, HEAR ME ROAR! '+App.getMusicStatus())
+    // console.log('peers: ',App.webrtc.getPeers());
+    // App.socket.emit('tester_music', App.getMusicStatus());
+    if(!App.music.paused) {
+      App.webrtc.sendToAll('wut?', App.getMusicStatus());
+    }
   }
 
   App.getMusicStatus = function() {
@@ -237,11 +239,11 @@ App.init = function() {
   var updatePlayerTime = function(data) {
     var socketDiff = Date.now() - data.msgTime;
 
-    console.log('socket transmition lag: '+socketDiff);
+    // console.log('socket transmition lag: '+socketDiff);
 
-    console.log(App.music.currentTime,data.currentTime,(data.currentTime + socketDiff/1000))
+    // console.log(App.music.currentTime,data.currentTime,(data.currentTime + socketDiff/1000))
 
-    App.music.currentTime = data.currentTime;
+    App.music.currentTime = data.currentTime + socketDiff/1000;
   };
 
   // App.webrtc.connection.on('message', function(message) {

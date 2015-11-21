@@ -109,17 +109,17 @@ $(function() {
   //when the client starts up a room, make a call to get the status from anyone in the room
   // App.socket.emit('music_request_status',null);
 
-  $('.playMusic').on('click', function() {
-    App.socket.emit('music_play_all', App.getMusicStatus());
-  });
+  // $('.playMusic').on('click', function() {
+  //   App.socket.emit('music_play_all', App.getMusicStatus());
+  // });
 
-  $('.rtcChat').on('click', function() {
-    App.webrtc.sendToAll('wtf', App.getMusicStatus());
-  });
+  // $('.rtcChat').on('click', function() {
+  //   App.webrtc.sendToAll('wtf', App.getMusicStatus());
+  // });
 
-  App.socket.on('you_are_the_master', function(data) {
-    setInterval(App.updateTheKids, 1000);
-  });
+  // App.socket.on('you_are_the_master', function(data) {
+  //   setInterval(App.updateTheKids, 1000);
+  // });
 
 
 });

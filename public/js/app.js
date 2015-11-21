@@ -30,6 +30,14 @@ App.init = function() {
     App.webrtc.joinRoom(ioRoom);
   });
 
+  App.webrtc.on('joinedRoom', function () {
+    var peers = App.webrtc.getPeers();
+    console.log(peers);
+    if(peers.length === 0) {
+      setInterval(App.updateTheKids, 1000);
+    }
+  });
+
   // console.log('i have peers! ',webrtc.peers);
 
   // **Whiteboard**
@@ -198,6 +206,7 @@ App.init = function() {
 
   App.updateTheKids = function() {
     console.log('I AM THE MASTER, HEAR ME ROAR! '+App.getMusicStatus())
+    console.log('peers: ',App.webrtc.getPeers());
     //App.socket.emit('music_status', App.getMusicStatus());
     App.webrtc.sendToAll('wut?', App.getMusicStatus());
   }

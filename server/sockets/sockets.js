@@ -3,7 +3,7 @@
 // ##### [Back to Table of Contents](./tableofcontents.html)
 
 // Import board model from [board.js](../documentation/board.html)
-var Board = require('../db/board');
+var Board = require('../../db/board');
 
 // **boardUrl:** *String* <br>
 // **board:** *Mongoose board model* <br>
@@ -14,7 +14,16 @@ var connect = function(boardUrl, board, io) {
 
   whiteboard.once('connection', function(socket) {
     // Send the current state of the board to the client immediately on joining.
+
+    console.log('imcoming socket from: '+socket.id);
+
     socket.emit('join', board);
+
+    //if there is only one person on the socket, emit a message to tell them they are the dj
+    console.log('ppl in room: '+socket.conn.server.clientsCount);
+    if(Number(socket.conn.server.clientsCount) === 1) {
+      socket.emit('you_are_the_master', null);
+    }
 
     socket.on('start', function(pen) {
 
@@ -47,7 +56,7 @@ var connect = function(boardUrl, board, io) {
       var id = socket.nsp.name.slice(1);
 
       //Update the board with the new stroke.
-      Board.boardModel.update({id: id},{$push: {strokes: finishedStroke} },{upsert:true},function(err, board){
+      Board.boardModel.update({_id: id},{$push: {strokes: finishedStroke} },{upsert:true},function(err, board){
         if(err){ console.log(err); }
         else {
           console.log("Successfully added");
@@ -60,6 +69,32 @@ var connect = function(boardUrl, board, io) {
       //Delete the stroke object to make room for the next stroke.
       delete socket.stroke;
     });
+
+    // socket.on('music_play_all', function(data) {
+    //   console.log('someone REALLY loves this shit');
+    //   socket.emit('music_play', data);
+    // });
+
+    // socket.on('music_play', function(data) {
+    //   console.log('someone loves this shit');
+    //   socket.broadcast.emit('music_play', data);
+    // });
+
+    // socket.on('music_pause', function(data) {
+    //   console.log('somone HATES this shit');
+    //   socket.broadcast.emit('music_pause', data);
+    // });
+
+    // socket.on('music_request_status', function() {
+    //   console.log('some noob just got to the room');
+    //   socket.broadcast.emit('music_request_status', null);
+    // });
+
+    // socket.on('music_status', function(data) {
+    //   console.log('i know whats happening in this room');
+    //   socket.broadcast.emit('music_status', data);
+    // });
+    
   });
 };
 

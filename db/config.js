@@ -6,13 +6,12 @@ var mongoose = require('mongoose');
 //TODO: (99) Add in conditional statement for DEV or PROD
 // Currently configured for deployment. Change to this for development:
 // mongoose.connect('mongodb://127.0.0.1');
-mongoose.connect('mongodb://coder:radio@ds031651.mongolab.com:31651/coderboard');
 // mongoose.connect(process.env.MONGOLAB_URI);
 if (process.env.NODE_ENV === 'DEV') {
   console.log('using DEV settings');
   mongoose.connect('mongodb://127.0.0.1');
 } else {
-  mongoose.connect('mongodb://127.0.0.1');
+  mongoose.connect('mongodb://coder:radio@ds031651.mongolab.com:31651/coderboard');
 }
 
 var db = mongoose.connection;

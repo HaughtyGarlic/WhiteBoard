@@ -147,10 +147,6 @@ App.init = function() {
   //RADIO STUFFS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-  App.socket.on('you_are_the_master', function(data) {
-    setInterval(App.updateTheKids, 1000);
-  });
-
   App.music = $('audio')[0];
 
   App.socket.on('music_play', function(data) {

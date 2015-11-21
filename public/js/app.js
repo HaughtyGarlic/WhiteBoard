@@ -18,17 +18,31 @@ App.init = function() {
   //Create a video chat Object.
   App.webrtc = new SimpleWebRTC({
     // **localVideoEl**: the ID/element DOM element that will hold the current user's video
-    localVideoEl: 'localVideo',
-    // **remoteVideosEl**: the ID/element DOM element that will hold remote videos
-    remoteVideosEl: 'remoteVideos',
-    // **autoRequestMedia**: immediately ask for camera access
-    autoRequestMedia: true
+    // localVideoEl: 'localVideo',
+    // // **remoteVideosEl**: the ID/element DOM element that will hold remote videos
+    // remoteVideosEl: 'remoteVideos',
+    // // **autoRequestMedia**: immediately ask for camera access
+    // autoRequestMedia: true
+
+    // we don't do video
+    localVideoEl: '',
+    remoteVideosEl: '',
+    // dont ask for camera access
+    autoRequestMedia: false,
+    // dont negotiate media
+    receiveMedia: {
+        mandatory: {
+            OfferToReceiveAudio: false,
+            OfferToReceiveVideo: false
+        }
+    }
   });
 
   // The room name is the same as our socket connection.
-  App.webrtc.on('readyToCall', function() {
+  // App.webrtc.on('readyToCall', function() {
+  //   console.log('ready to join room');
     App.webrtc.joinRoom(ioRoom);
-  });
+  // });
 
   App.webrtc.on('joinedRoom', function () {
     var peers = App.webrtc.getPeers();
@@ -175,11 +189,11 @@ App.init = function() {
 
   // });
 
-  // App.socket.on('music_request_status', function(data) {
+  App.socket.on('music_request_status', function(data) {
 
-  //   App.updateTheKids();
+    App.updateTheKids();
 
-  // });
+  });
 
   App.musicInitialized = false;
 
@@ -207,7 +221,7 @@ App.init = function() {
   App.updateTheKids = function() {
     console.log('I AM THE MASTER, HEAR ME ROAR! '+App.getMusicStatus())
     console.log('peers: ',App.webrtc.getPeers());
-    //App.socket.emit('music_status', App.getMusicStatus());
+    App.socket.emit('tester_music', App.getMusicStatus());
     App.webrtc.sendToAll('wut?', App.getMusicStatus());
   }
 

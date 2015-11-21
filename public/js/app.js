@@ -48,7 +48,7 @@ App.init = function() {
     var peers = App.webrtc.getPeers();
     console.log(peers);
     if(peers.length === 0) {
-      setInterval(App.updateTheKids, 100);
+      setInterval(App.updateTheKids, 5000);
     }
   });
 

@@ -243,7 +243,7 @@ App.init = function() {
 
     // console.log(App.music.currentTime,data.currentTime,(data.currentTime + socketDiff/1000))
 
-    App.music.currentTime = data.currentTime + socketDiff/1000;
+    App.music.currentTime = data.currentTime + socketDiff/2000;
   };
 
   // App.webrtc.connection.on('message', function(message) {

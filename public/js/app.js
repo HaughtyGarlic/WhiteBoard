@@ -35,7 +35,9 @@ App.init = function() {
             OfferToReceiveAudio: false,
             OfferToReceiveVideo: false
         }
-    }
+    },
+
+    url: '104.131.154.76:8888'
   });
 
   // The room name is the same as our socket connection.

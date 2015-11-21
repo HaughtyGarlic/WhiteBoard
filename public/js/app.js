@@ -15,20 +15,44 @@ App.init = function() {
 
   //**Video Chat Functionality** 
 
-  // Create a video chat Object.
-  var webrtc = new SimpleWebRTC({
+  //Create a video chat Object.
+  App.webrtc = new SimpleWebRTC({
     // **localVideoEl**: the ID/element DOM element that will hold the current user's video
-    localVideoEl: 'localVideo',
-    // **remoteVideosEl**: the ID/element DOM element that will hold remote videos
-    remoteVideosEl: 'remoteVideos',
-    // **autoRequestMedia**: immediately ask for camera access
-    autoRequestMedia: true
+    // localVideoEl: 'localVideo',
+    // // **remoteVideosEl**: the ID/element DOM element that will hold remote videos
+    // remoteVideosEl: 'remoteVideos',
+    // // **autoRequestMedia**: immediately ask for camera access
+    // autoRequestMedia: true
+
+    // we don't do video
+    localVideoEl: '',
+    remoteVideosEl: '',
+    // dont ask for camera access
+    autoRequestMedia: false,
+    // dont negotiate media
+    receiveMedia: {
+        mandatory: {
+            OfferToReceiveAudio: false,
+            OfferToReceiveVideo: false
+        }
+    }
   });
 
   // The room name is the same as our socket connection.
-  webrtc.on('readyToCall', function() {
-    webrtc.joinRoom(ioRoom);
+  // App.webrtc.on('readyToCall', function() {
+  //   console.log('ready to join room');
+    App.webrtc.joinRoom(ioRoom);
+  // });
+
+  App.webrtc.on('joinedRoom', function () {
+    var peers = App.webrtc.getPeers();
+    console.log(peers);
+    if(peers.length === 0) {
+      setInterval(App.updateTheKids, 1000);
+    }
   });
+
+  // console.log('i have peers! ',webrtc.peers);
 
   // **Whiteboard**
 
@@ -143,5 +167,85 @@ App.init = function() {
     App.context.closePath();
     App.isAnotherUserActive = false;
   });
+
+  //RADIO STUFFS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+  App.music = $('audio')[0];
+
+  // App.socket.on('music_play', function(data) {
+    
+  //   App.music.play();
+
+  //   updatePlayerTime(data);
+    
+  // });
+
+  // App.socket.on('music_pause', function(data) {
+    
+  //   App.music.pause();
+
+  //   updatePlayerTime(data);
+
+  // });
+
+  App.socket.on('music_request_status', function(data) {
+
+    App.updateTheKids();
+
+  });
+
+  App.musicInitialized = false;
+
+  // App.socket.on('music_status', function(data) {
+  App.webrtc.connection.on('message', function(data) {  
+    
+    if(data.payload && data.payload.type === 'music_status') {
+      console.log(data);
+      // if(!App.musicInitialized) {
+
+        console.log('player status: ', data.payload.paused);
+        if(!data.payload.paused) {
+          App.music.play();
+        } else if(data.payload.paused) {
+          App.music.pause();
+        }
+        // App.musicInitialized = true;
+      // }
+
+      updatePlayerTime(data.payload);
+    }
+
+  });
+
+  App.updateTheKids = function() {
+    console.log('I AM THE MASTER, HEAR ME ROAR! '+App.getMusicStatus())
+    console.log('peers: ',App.webrtc.getPeers());
+    App.socket.emit('tester_music', App.getMusicStatus());
+    App.webrtc.sendToAll('wut?', App.getMusicStatus());
+  }
+
+  App.getMusicStatus = function() {
+    return {
+      type: 'music_status',
+      currentTime: App.music.currentTime,
+      paused: App.music.paused,
+      msgTime: Date.now()
+    };
+  };
+
+  var updatePlayerTime = function(data) {
+    var socketDiff = Date.now() - data.msgTime;
+
+    console.log('socket transmition lag: '+socketDiff);
+
+    console.log(App.music.currentTime,data.currentTime,(data.currentTime + socketDiff/1000))
+
+    App.music.currentTime = data.currentTime;
+  };
+
+  // App.webrtc.connection.on('message', function(message) {
+  //   console.log('webRTC data: ', message);
+  // });
 
 };

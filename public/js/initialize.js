@@ -11,8 +11,8 @@ $(function() {
   App.init();
 
   // Set up video to be draggable.
-  $('#localVideo').draggable();
-  $('#remoteVideos').draggable();
+  // $('#localVideo').draggable();
+  // $('#remoteVideos').draggable();
 
   // **Mouse Events**
 
@@ -91,6 +91,35 @@ $(function() {
   App.canvas.on('mouseleave', function(e) {
     App.canvas.trigger('dragend');
   });
+
+  //RADIO STUFFS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  App.music.addEventListener('play', function(e) {
+    console.log('im playing so funky ass shit');
+    App.webrtc.sendToAll('wut?', App.getMusicStatus());
+    // App.socket.emit('music_play', App.getMusicStatus());
+  });
+
+  App.music.addEventListener('pause', function(e) {
+    console.log('hold up hold up, let me tie my shoe');
+    App.webrtc.sendToAll('wut?', App.getMusicStatus());
+    // App.socket.emit('music_pause', App.getMusicStatus());
+  });
+
+  //when the client starts up a room, make a call to get the status from anyone in the room
+  // App.socket.emit('music_request_status',null);
+
+  // $('.playMusic').on('click', function() {
+  //   App.socket.emit('music_play_all', App.getMusicStatus());
+  // });
+
+  // $('.rtcChat').on('click', function() {
+  //   App.webrtc.sendToAll('wtf', App.getMusicStatus());
+  // });
+
+  // App.socket.on('you_are_the_master', function(data) {
+  //   setInterval(App.updateTheKids, 1000);
+  // });
 
 
 });

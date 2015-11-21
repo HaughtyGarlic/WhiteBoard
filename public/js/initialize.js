@@ -112,5 +112,9 @@ $(function() {
     App.socket.emit('music_play_all', App.getMusicStatus());
   });
 
+  App.socket.on('you_are_the_master', function(data) {
+    setInterval(App.updateTheKids, 1000);
+  });
+
 
 });

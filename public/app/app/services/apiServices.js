@@ -41,4 +41,16 @@ angular.module('apiServices', [])
     });
   };
 })
+
+.service('songQueue', function() {
+
+  //storing the song queue in memory
+  var _songQueue = [];
+
+  this.getSongQueue = function() {
+    return _songQueue;
+  };
+
+})
+
 ;

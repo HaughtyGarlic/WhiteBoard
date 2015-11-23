@@ -1,9 +1,9 @@
 <div layout="column">
 	
 	<div ui-view="nav"></div>
-	<!-- <div layout="row">
-		<div ui-view="whiteboard"></div>
-		<div ui-view="chat"></div>
-	</div> -->
+	<div layout="row" flex layout-wrap>
+		<div ui-view="whiteboard" flex-gt-sm="70" flex-sm="100"></div>
+		<div ui-view="chat" flex-gt-sm="30" flex-sm="100"></div>
+	</div>
 
 </div>

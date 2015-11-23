@@ -2,9 +2,9 @@
 
 angular.module('playlist', [])
 
-.controller('PlaylistController', function($scope, $mdDialog, $timeout, soundCloud) {
-  
-  $scope.queue = [];
+.controller('PlaylistController', function($scope, $mdDialog, $timeout, soundCloud, songQueue) {
+
+  $scope.songQueue = songQueue.getSongQueue();
 
   $scope.hide = function() {
     $mdDialog.hide();
@@ -21,9 +21,10 @@ angular.module('playlist', [])
   };
 
   $scope.selectedItemChange = function(item) {
-    $scope.queue.push(item);
+    // debugger;
+    $scope.songQueue.push(item);
     $scope.searchText = '';
-    $scope.selectedItem= undefined;
+    $scope.selectedItem= null;
   };
 
 });

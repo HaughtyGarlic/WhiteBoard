@@ -3,6 +3,9 @@
 angular.module('nav', ['playlist'])
 
 .controller('NavController', function ($scope, $mdDialog) {
+
+  $scope.songQueue = [{title:'hi'}];
+
   $scope.showPlaylist = function(ev) {
     $mdDialog.show({
       controller: 'PlaylistController',

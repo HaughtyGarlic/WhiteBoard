@@ -22,6 +22,6 @@ angular.module('whiteboard.pens', [])
     return {
       restrict: 'E',
       controller: 'pensCtrl',
-      templateUrl: 'whiteboard/pens/pens.html'
+      templateUrl: 'app/components/whiteboard/pens/pens.html'
     };
   });

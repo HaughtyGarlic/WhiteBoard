@@ -1,21 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app="app">
 
 <head>
   <meta charset="UTF-8">
   <title></title>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
-  <script src = "whiteboard/pens/pens.js"></script>
-  <script src = "whiteboard/whiteboard.js"></script>
-  <script src="app.js"></script>
-  <link rel="stylesheet" href="app.css">
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://gitcdn.xyz/repo/angular/bower-material/master/angular-material.css">
+  <!-- <link rel="stylesheet" href="styles/style.css"> -->
+  <link rel="stylesheet" href="app/components/whiteboard/whiteboard.css">
+  <link rel="stylesheet" href="app/components/nav/nav.css">
+
+  <script src="http://simplewebrtc.com/latest.js"></script>
+  <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
+  <script src="lib/jquery.event.drag-2.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.js"></script>
+  <script src="https://gitcdn.xyz/repo/angular/bower-material/master/angular-material.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
+  
+  <script src="app/app.js"></script>
+  <script src="app/components/lobby/lobby.js"></script>
+  <script src="app/components/nav/nav.js"></script>
+  <script src="app/components/playlist/playlist.js"></script>
+  <!-- // <script src="app/components/chat/chat.js"></script> -->
+<!--   // <script src="app/components/whiteboard/whiteboard.js"></script>
+  // <script src="app/components/whiteboard/pens/pens.js"></script> -->
+  <script src="app/services/apiServices.js"></script>
 </head>
 
-<body ng-app="app">
-  <p>{{1+3}}</p>
-  <whiteboard height="500px" width="500px"></whiteboard>
-  <pens></pens>
+<body>
+
+  <div ui-view></div>
+
 </body>
 
 </html>

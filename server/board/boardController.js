@@ -9,13 +9,13 @@ module.exports = {
     var board = new Board.boardModel({strokes: []});
     var id = board._id.toString();
     board.save(function(err, board) {
-      if (err) { console.error(err); }
+      if (err) { console.error('error creating board',err); }
       else {
         console.log('board saved!');
+        res.send({id:id});
       }
     });
-    // Redirect to the new board.
-    res.redirect('/' + id);
+    // Send new board id.
 
   },
 
@@ -29,6 +29,7 @@ module.exports = {
       // then redirect to the home page.
       console.log(err, board);
       if (err) {
+        console.log('i am an error',err);
         res.redirect('/');
       } else {
         // Invoke [request handler](../documentation/sockets.html) for a new socket connection
@@ -36,7 +37,8 @@ module.exports = {
         console.log('board id', board);
         handleSocket(req.url, board, req.io);
         // Send back whiteboard html template.
-        res.sendFile(path.join(__dirname,'../../public/board.html'));
+        //res.sendFile(path.join(__dirname,'../../public/board.html'));
+        res.redirect('/#/room/'+id);
       }
     });
 

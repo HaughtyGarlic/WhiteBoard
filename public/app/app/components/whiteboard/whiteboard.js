@@ -1,5 +1,5 @@
 angular.module('whiteboard', [])
-  .controller('whiteboardCtrl', function ($scope) {
+  .controller('WhiteboardController', function ($scope) {
     $scope.pen = {
       fillStyle: 'solid',
       strokeStyle: "red",
@@ -11,7 +11,7 @@ angular.module('whiteboard', [])
   .directive('whiteboard', function ($document) {
     return {
       restrict: 'E',
-      controller: 'whiteboardCtrl',
+      controller: 'WhiteboardController',
       //pass attrs to template
       template: function (element, attr) {
         var height = attr.height || '200px';

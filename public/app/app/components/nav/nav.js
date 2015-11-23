@@ -6,7 +6,7 @@ angular.module('nav', ['playlist'])
   $scope.showPlaylist = function(ev) {
     $mdDialog.show({
       controller: 'PlaylistController',
-      templateUrl: '../views/playlist.html',
+      templateUrl: 'app/components/playlist/playlist.html',
       parent: angular.element(document.body),
       targetEvent: ev,
       clickOutsideToClose:true

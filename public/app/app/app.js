@@ -6,6 +6,7 @@ angular.module('app', [
   'chat',
 	'whiteboard',
 	'whiteboard.pens',
+  'apiServices',
 	'ui.router',
 	'ngMaterial',
 	'ngAnimate'
@@ -15,27 +16,27 @@ angular.module('app', [
   $stateProvider
   .state('lobby', {
     url: '/lobby',
-    templateUrl: 'components/lobby/lobby.html',
+    templateUrl: 'app/components/lobby/lobby.html',
     controller: 'LobbyController'
   })
   .state('room', {
     url: '/room',
-    templateUrl: 'components/room/room.html'
+    templateUrl: 'app/components/room/room.html'
   })
   .state('room.id', {
     url: '/:id',
     views: {
     	'nav': {
-    		templateUrl: 'components/nav/nav.html',
+    		templateUrl: 'app/components/nav/nav.html',
     		controller: 'NavController'
     	},
       'whiteboard': {
-      	templateUrl: 'components/whiteboard/whiteboard.html'
+      	templateUrl: 'app/components/whiteboard/whiteboard.html'
       },
       'chat': {
-      	templateUrl: 'components/chat/chat.html',
+      	templateUrl: 'app/components/chat/chat.html',
       	controller: 'ChatController'
-      },
+      }
     }
   });
 

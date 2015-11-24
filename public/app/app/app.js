@@ -7,6 +7,7 @@ angular.module('app', [
 	'whiteboard',
 	'whiteboard.pens',
   'apiServices',
+  'webRTC',
 	'ui.router',
 	'ngMaterial',
 	'ngAnimate'

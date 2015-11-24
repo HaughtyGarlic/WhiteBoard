@@ -2,9 +2,7 @@
 
 angular.module('nav', ['playlist'])
 
-.controller('NavController', function ($scope, $mdDialog) {
-
-  $scope.songQueue = [{title:'hi'}];
+.controller('NavController', function ($scope, $mdDialog, $location, webRTC) {
 
   $scope.showPlaylist = function(ev) {
     $mdDialog.show({
@@ -20,4 +18,14 @@ angular.module('nav', ['playlist'])
       $scope.status = 'You cancelled the dialog.';
     });
   };
+
+  $scope.joinRoom = function() {
+    //assumes that we are in #/room/:id
+    var ioRoom = $location.path().split('/')[2]
+    webRTC.joinRoom(ioRoom);
+  };
+
+  //join on nav init
+  $scope.joinRoom();
+
 });

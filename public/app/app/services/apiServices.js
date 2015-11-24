@@ -2,9 +2,9 @@
 
 angular.module('apiServices', [])
 
-.factory('Lobby', function ($http) {
+.service('Lobby', function ($http) {
 
-  var newRoom = function () {
+  this.newRoom = function () {
 
     return $http({
       method: 'GET',
@@ -19,11 +19,6 @@ angular.module('apiServices', [])
     })
     ;
 
-  };
-
-  return {
-    newRoom: newRoom
-    // getRoom: getRoom
   };
 
 })

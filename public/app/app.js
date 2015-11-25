@@ -6,8 +6,9 @@ angular.module('app', [
   'chat',
 	'whiteboard',
 	'whiteboard.pens',
-  'apiServices',
   'webRTC',
+  'audio',
+  'apiServices',
 	'ui.router',
 	'ngMaterial',
 	'ngAnimate'

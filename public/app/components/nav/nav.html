@@ -2,7 +2,10 @@
   <md-toolbar class="md-warn md-hue-2">
     <div class="md-toolbar-tools" layout="row" flex layout-wrap>
         
-        <audio controls preload="auto" src="https://api.soundcloud.com/tracks/90139572/stream?client_id=9e3abdceafbd5ef113b3430508a34c92"></audio>
+				<video id="localVideo"></video>
+				<div id="remoteVideos"></div>
+
+        <audio controls autoplay preload="auto"></audio>
 
         <md-button class="md-primary" aria-label="PlaylistButton" ng-click="showPlaylist($event)">
           <md-icon md-menu-origin md-svg-icon="assets/images/icons/ic_queue_music_white_24px.svg"></md-icon>

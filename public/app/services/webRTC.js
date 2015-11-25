@@ -2,14 +2,14 @@
 
 angular.module('webRTC', [])
 
-.service('webRTC', function () {
+.service('webRTC', function (songQueue, audio) {
 
-  var audio;
+  var audioVar;
 
 	var webrtc = new SimpleWebRTC({
 
-	  localVideoEl: '',
-	  remoteVideosEl: '',
+	  localVideoEl: 'localVideo',
+	  remoteVideosEl: 'remoteVideos',
 	  autoRequestMedia: false,
 	  receiveMedia: {
 	      mandatory: {
@@ -24,9 +24,9 @@ angular.module('webRTC', [])
     var peers = webrtc.getPeers();
     console.log(peers);
     if(peers.length === 0) {
-      setInterval(updateTheKids, 5000);
+      setInterval(this.updateTheKids, 5000);
     }
-  });
+  }.bind(this));
 
   webrtc.connection.on('message', function(data) {  
     console.log(data);
@@ -35,36 +35,47 @@ angular.module('webRTC', [])
 
       // console.log('player status: ', data.payload.paused);
       if(!data.payload.paused) {
-        audio.play();
+        audioVar.play();
       } else if(data.payload.paused) {
-        audio.pause();
+        audioVar.pause();
       }
-
+      songQueue.setSongQueue(data.payload.songQueue);
+      if(audioVar.src !== audio.getTrackURL(data.payload.songQueue[0].stream_url)) {
+        audio.setTrack(data.payload.songQueue[0].stream_url)
+      }
       updatePlayerTime(data.payload);
     } else if (data.type === 'offer') {
       // setTimeout(updateTheKids,200);
-      updateTheKids();
+      this.updateTheKids();
     }
 
-  });
+  }.bind(this));
 
   var updatePlayerTime = function(data) {
     var transTime = Date.now() - data.msgTime;
     // console.log('webRTC msg trans time (ms): ',transTime);
-    audio.currentTime = data.currentTime + transTime/1000;
+    
+    console.log('current audio src', audioVar.src);
+    if(!audioVar.src) {
+      audio.setTrack(data.songQueue[0].stream_url);
+    }
+
+    audioVar.currentTime = data.currentTime + transTime/1000;
+
   };
 
   var getMusicStatus = function() {
 
     return {
       type: 'music_status',
-      currentTime: audio.currentTime,
-      paused: audio.paused,
-      msgTime: Date.now()
+      currentTime: audioVar.currentTime,
+      paused: audioVar.paused,
+      msgTime: Date.now(),
+      songQueue: songQueue.getSongQueue()
     };
   };
 
-  var updateTheKids = function() {
+  this.updateTheKids = function() {
   	// console.log('updating the kids');
     // if(!audio.paused) {
       console.log('about to send update to the kids, hold tight');
@@ -83,15 +94,16 @@ angular.module('webRTC', [])
   };
 
   var initAudio = function() {
-    audio = angular.element('audio')[0];
+    
+    audioVar = audio.initAudio();
 
     //should be moved to it's own service in the future
-    audio.addEventListener('play', function(e) {
+    audioVar.addEventListener('play', function(e) {
       console.log('im playing so funky ass shit');
       webrtc.sendToAll('wut?', getMusicStatus());
     });
 
-    audio.addEventListener('pause', function(e) {
+    audioVar.addEventListener('pause', function(e) {
       console.log('hold up hold up, let me tie my shoe');
       webrtc.sendToAll('wut?', getMusicStatus());
     });

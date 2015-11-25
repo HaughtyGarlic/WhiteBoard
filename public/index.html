@@ -1,38 +1,42 @@
 <!DOCTYPE html>
-<html >
-	<head>
-		<meta charset="UTF-8">
-		<title>Whiteboard Me</title>
+<html ng-app="app">
 
-		<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet" href="css/style.css">
-		
-	</head>
-	<body>
-		<!-- <video autoplay id="bgvid" loop>
-			Video is 8MB. Uncomment when ready to show final product.
-			<source src="assets/dayinthelifeshort-720p.mov" type="video/mp4">
-		</video> -->
-		<header id="header">
-			<h1>Coderboard</h1>
-			<p>Fast &nbsp;&bull;&nbsp; Free &nbsp;&bull;&nbsp; For Your Coding Interviews</p>
-			<div class="buttons">
-				<a href="/new">
-					<!-- <button class="pure-button"> -->
-					<button>Start Whiteboarding Now</button>
-				</a>
-			</div>
-			<div class="buttons">
-				<a href="/documentation">
-					<!-- <button class="pure-button"> -->
-					<button>Documentation</button>
-				</a>
-			</div>
-			
-			
-		</header>
-		<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-		
-		
-	</body>
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://gitcdn.xyz/repo/angular/bower-material/master/angular-material.css">
+  <!-- <link rel="stylesheet" href="styles/style.css"> -->
+  <link rel="stylesheet" href="app/components/whiteboard/whiteboard.css">
+  <link rel="stylesheet" href="app/components/nav/nav.css">
+
+  <script src="http://simplewebrtc.com/latest.js"></script>
+  <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
+  <script src="lib/jquery.event.drag-2.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.js"></script>
+  <script src="https://gitcdn.xyz/repo/angular/bower-material/master/angular-material.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
+  
+  <script src="app/app.js"></script>
+  <script src="app/components/lobby/lobby.js"></script>
+  <script src="app/components/nav/nav.js"></script>
+  <script src="app/components/playlist/playlist.js"></script>
+  <script src="app/components/chat/chat.js"></script>
+  <script src="app/components/whiteboard/whiteboard.js"></script>
+  <script src="app/components/whiteboard/pens/pens.js"></script>
+  <script src="app/services/apiServices.js"></script>
+  <script src="app/services/webRTC.js"></script>
+  <script src="app/services/audio.js"></script>
+</head>
+
+<body>
+
+  <div ui-view></div>
+
+</body>
+
 </html>

@@ -2,7 +2,7 @@
 
 angular.module('nav', ['playlist'])
 
-.controller('NavController', function ($scope, $mdDialog, $location, webRTC) {
+.controller('NavController', function ($scope, $mdDialog, $location, webRTC, socket) {
 
   $scope.showPlaylist = function(ev) {
     $mdDialog.show({

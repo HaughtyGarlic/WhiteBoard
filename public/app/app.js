@@ -8,6 +8,7 @@ angular.module('app', [
 	'whiteboard.pens',
   'webRTC',
   'audio',
+  'socket',
   'apiServices',
 	'ui.router',
 	'ngMaterial',

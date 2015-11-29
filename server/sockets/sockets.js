@@ -11,6 +11,8 @@ var Board = require('../../db/board');
 var connect = function(boardUrl, board, io) {
   // Set the Socket.io namespace to the boardUrl.
   var whiteboard = io.of(boardUrl);
+  console.log('socket triggered on get board');
+  // console.log(boardUrl, board, io);
 
   whiteboard.once('connection', function(socket) {
     // Send the current state of the board to the client immediately on joining.
@@ -21,9 +23,9 @@ var connect = function(boardUrl, board, io) {
 
     //if there is only one person on the socket, emit a message to tell them they are the dj
     console.log('ppl in room: '+socket.conn.server.clientsCount);
-    if(Number(socket.conn.server.clientsCount) === 1) {
-      socket.emit('you_are_the_master', null);
-    }
+    // if(Number(socket.conn.server.clientsCount) === 1) {
+    //   socket.emit('you_are_the_master', null);
+    // }
 
     socket.on('start', function(pen) {
 

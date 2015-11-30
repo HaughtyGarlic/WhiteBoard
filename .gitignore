@@ -1,3 +1,8 @@
+# Editor/Environment
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+
 # Logs
 logs
 *.log

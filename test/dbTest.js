@@ -1,3 +1,5 @@
+/*jshint expr: true*/
+
 /* You'll need to have mongo running on the right url and your Node server running
  * for these tests to pass. */
 
@@ -13,6 +15,7 @@ var board = db.model('board');
 describe("Persistent Boards Server", function() {
 
   beforeEach(function(done) {
+    //TODO: (30) Remove?
     // var db = mongoose.createConnection('mongodb://127.0.0.1');
     newBoard = board({strokes: []});
     boardID = newBoard._id;
@@ -73,6 +76,7 @@ describe("Persistent Boards Server", function() {
       });
     });
 
+    //TODO: (20) There has to be a better way to do this...
     setTimeout(function() {
       Board.findOne({_id: boardID}, function(err, doc) {
         expect(doc.strokes.length).to.equal(2);

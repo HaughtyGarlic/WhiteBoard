@@ -1,15 +1,6 @@
-/*
-To make these tests pass, you have to change 'root/server/sockets.js':15
-##  whiteboard.once('connection', function(socket) { ##
-to
-##  whiteboard.on('connection', function(socket) { ##
-
-Also, don't forget to change it back when you're done testing, else the app will
-be buggy.
- */
-
+/*jshint expr: true*/
 var expect = require('chai').expect;
-var handler = require('../server/sockets');
+var handler = require('../server/sockets/sockets');
 var socket = require('socket.io-client');
 var io = require('socket.io')(9000);
 

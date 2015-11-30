@@ -14,7 +14,7 @@ var connect = function(boardUrl, board, io) {
   console.log('socket triggered on get board');
   // console.log(boardUrl, board, io);
 
-  whiteboard.once('connection', function(socket) {
+  whiteboard.on('connection', function(socket) {
     // Send the current state of the board to the client immediately on joining.
 
     console.log('imcoming socket from: '+socket.id);

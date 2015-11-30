@@ -1,6 +1,6 @@
 /*jshint expr: true*/
 var expect = require('chai').expect;
-var handler = require('../server/sockets');
+var handler = require('../server/sockets/sockets');
 var socket = require('socket.io-client');
 var io = require('socket.io')(9000);
 

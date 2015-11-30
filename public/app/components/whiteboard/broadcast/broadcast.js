@@ -95,31 +95,31 @@ angular.module('whiteboard.broadcast', [])
               user.last = current;
             });
 
-            socket.on('join', function (board) {
+            socket.on('join', function (data) {
 
-              console.log("Joining the board.");
-              // Check for null board data.
-              if (!board) {
+              // Check for null data.
+              if (!data) {
                 console.log('empty board');
                 return;
               }
 
               // GET OTHER PLAYERS
-              board.users.forEach(function (userid) {
+              data.users.forEach(function (userid) {
                 users[userid] = new Player(userid);
               });
 
-              board.strokes.forEach(function (stroke) {
+              var writeHistory = new Player();
+
+              data.board.strokes.forEach(function (stroke) {
                 // Check for null stroke data.
                 if (!stroke || stroke.path.length < 2) {
                   return;
                 }
-                pen = stroke.pen;
+                writeHistory.pen = stroke.pen;
 
                 //draw path
                 stroke.path.reduce(function (from, to) {
-                  console.log(from, to);
-                  draw(from, to);
+                  writeHistory.draw(from, to);
                   return to;
                 });
 

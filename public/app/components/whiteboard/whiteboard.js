@@ -61,7 +61,6 @@ angular.module('whiteboard', [])
         function mouseMove(event) {
           event.preventDefault();
           var current = [event.offsetX, event.offsetY];
-          console.log(current);
           last = last === null ? current : last;
           draw(last, current);
           last = current;

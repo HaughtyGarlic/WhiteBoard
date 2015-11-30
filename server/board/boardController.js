@@ -30,15 +30,17 @@ module.exports = {
       console.log(err, board);
       if (err) {
         console.log('i am an error',err);
-        res.redirect('/');
+        // res.redirect('/');
       } else {
         // Invoke [request handler](../documentation/sockets.html) for a new socket connection
         // with board id as the Socket.io namespace.
         console.log('board id', board);
+        console.log('req.url: ', req.url);
         handleSocket(req.url, board, req.io);
         // Send back whiteboard html template.
         //res.sendFile(path.join(__dirname,'../../public/board.html'));
-        res.redirect('/#/room/'+id);
+        // res.redirect('/#/room/'+id);
+        res.send({id:id, board:board});
       }
     });
 

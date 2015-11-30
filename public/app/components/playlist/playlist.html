@@ -39,9 +39,9 @@
 
         </md-autocomplete>
 
-        <div ng-repeat="song in queue track by $index">
+        <div ng-repeat="song in songQueue track by $index">
           
-          <div>
+          <div ng-click="removeFromQueue($index)">
             <h3>{{ song.title }}</h3>
           </div>
 

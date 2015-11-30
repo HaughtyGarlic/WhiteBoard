@@ -3,9 +3,13 @@
 angular.module('app', [
 	'lobby',
   'nav',
- //  'chat',
-	// 'whiteboard',
-	// 'whiteboard.pens',
+  'chat',
+	'whiteboard',
+  'whiteboard.broadcast',
+	'whiteboard.pens',
+  'webRTC',
+  'audio',
+  'socket',
   'apiServices',
 	'ui.router',
 	'ngMaterial',
@@ -29,14 +33,14 @@ angular.module('app', [
     	'nav': {
     		templateUrl: 'app/components/nav/nav.html',
     		controller: 'NavController'
-    	}
-      // 'whiteboard': {
-      // 	templateUrl: 'app/components/whiteboard/whiteboard.html'
-      // },
-      // 'chat': {
-      // 	templateUrl: 'app/components/chat/chat.html',
-      // 	controller: 'ChatController'
-      // }
+    	},
+      'whiteboard': {
+      	templateUrl: 'app/components/whiteboard/whiteboard.html'
+      },
+      'chat': {
+      	templateUrl: 'app/components/chat/chat.html',
+      	controller: 'ChatController'
+      }
     }
   });
 

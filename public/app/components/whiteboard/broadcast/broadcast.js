@@ -6,6 +6,8 @@ angular.module('whiteboard.broadcast', [])
       controller: 'BroadcastController',
       link: function (scope, element, attr) {
 
+        console.log('hi from broadcast');
+
         var board = element.find('canvas');
 
         board.on('mousedown', mouseDown);
@@ -36,11 +38,13 @@ angular.module('whiteboard.broadcast', [])
       }
     };
   })
-  .directive('receive', function ($document, socket) {
+  .directive('receive', function ($document, $location, Room, socket) {
     return {
       restrict: 'A',
       controller: 'BroadcastController',
       link: function (scope, element, attr) {
+
+        console.log('hi from receive');
 
         var board = element.find('canvas');
         var context = board[0].getContext("2d");
@@ -61,42 +65,49 @@ angular.module('whiteboard.broadcast', [])
           context.stroke();
         }
 
-        socket.on('end', function () {
-          last = null;
-        });
+        Room.getRoom($location.path())
+        .then(function (data) {
+          socket.init(data.id);
+          socket.on('end', function () {
+            last = null;
+          });
 
-        socket.on('drag', function (data) {
-          pen = data.pen;
-          var current = data.coords;
-          console.log('other user drawing:' + current);
-          last = last === null ? current : last;
-          draw(last, current);
-          last = current;
-        });
+          socket.on('drag', function (data) {
+            pen = data.pen;
+            var current = data.coords;
+            console.log('other user drawing:' + current);
+            last = last === null ? current : last;
+            draw(last, current);
+            last = current;
+          });
 
-        socket.on('join', function (board) {
-          console.log("Joining the board.");
-          // Check for null board data.
-          if (!board) {
-            console.log('empty board');
-            return;
-          }
-          board.strokes.forEach(function (stroke) {
-            // Check for null stroke data.
-            if (!stroke || stroke.path.length < 2) {
+          socket.on('join', function (board) {
+            console.log("Joining the board.");
+            // Check for null board data.
+            if (!board) {
+              console.log('empty board');
               return;
             }
-            pen = stroke.pen;
+            board.strokes.forEach(function (stroke) {
+              // Check for null stroke data.
+              if (!stroke || stroke.path.length < 2) {
+                return;
+              }
+              pen = stroke.pen;
 
-            //draw path
-            stroke.path.reduce(function (from, to) {
-              console.log(from, to);
-              draw(from, to);
-              return to;
+              //draw path
+              stroke.path.reduce(function (from, to) {
+                console.log(from, to);
+                draw(from, to);
+                return to;
+              });
+
             });
-
           });
-        });
+        })
+        .catch(function(err) {
+          console.error(err);
+        })
       }
     };
   });

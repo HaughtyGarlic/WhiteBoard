@@ -5,6 +5,7 @@ angular.module('app', [
   'nav',
   'chat',
 	'whiteboard',
+  'whiteboard.broadcast',
 	'whiteboard.pens',
   'webRTC',
   'audio',

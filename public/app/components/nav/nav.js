@@ -23,6 +23,14 @@ angular.module('nav', ['playlist'])
     //assumes that we are in #/room/:id
     var ioRoom = $location.path().split('/')[2]
     webRTC.joinRoom(ioRoom);
+    
+    // Room.getRoom($location.path())
+    // .then(function (data) {
+    //   socket.init(data.id)
+    // })
+    // .catch(function(err) {
+    //   console.error(err);
+    // })
   };
 
   //join on nav init

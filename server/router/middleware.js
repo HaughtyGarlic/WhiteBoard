@@ -16,7 +16,9 @@ module.exports = function (app, express, io) {
 
   app.use('/new', newBoardRouter);
 
-  app.all('*', boardRouter)
+  app.use('/room', boardRouter);
+
+  // app.all('*', boardRouter)
 
   require('../documentation/documentationRouter.js')(documentationRouter);
   require('../board/newBoardRouter.js')(newBoardRouter);

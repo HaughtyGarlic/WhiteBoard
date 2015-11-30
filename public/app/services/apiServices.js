@@ -23,6 +23,27 @@ angular.module('apiServices', [])
 
 })
 
+.service('Room', function ($http) {
+
+  this.getRoom = function (path) {
+
+    return $http({
+      method: 'GET',
+      url: path
+    })
+    .then(function (res) {
+      console.log(res)
+      return res.data;
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+    ;
+
+  };
+
+})
+
 .service('soundCloud', function($http) {
   this.getSongs = function(query) {
     var url = 'https://api.soundcloud.com/tracks?q='+query+'&client_id=9e3abdceafbd5ef113b3430508a34c92&limit=10'

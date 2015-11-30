@@ -2,12 +2,12 @@
 
 angular.module('lobby', [])
 
-.controller('LobbyController', function ($scope, $window, Lobby) {
+.controller('LobbyController', function ($scope, $location, Lobby) {
   $scope.newRoom = function() {
   	Lobby.newRoom()
   	.then(function (data) {
   		// Lobby.getRoom(data.id);
-  		$window.location.href = '/'+data.id;
+  		$location.path('/room/'+data.id);
   	})
   	.catch(function(err) {
   		console.error(err);

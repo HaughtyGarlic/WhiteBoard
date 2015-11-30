@@ -1,10 +1,12 @@
 var morgan = require('morgan');
+var bodyParser = require('body-parser')
 
 module.exports = function (app, express, io) {
 
   var documentationRouter = express.Router();
   var boardRouter = express.Router();
   var newBoardRouter = express.Router();
+  var activeBoardRouter = express.Router();
 
   app.use(morgan('dev'));
 
@@ -14,7 +16,9 @@ module.exports = function (app, express, io) {
   
   app.use('/documentation', documentationRouter);
 
-  app.use('/new', newBoardRouter);
+  app.use('/new', bodyParser.json(), newBoardRouter);
+
+  app.use('/active', activeBoardRouter);
 
   app.use('/room', boardRouter);
 
@@ -22,6 +26,7 @@ module.exports = function (app, express, io) {
 
   require('../documentation/documentationRouter.js')(documentationRouter);
   require('../board/newBoardRouter.js')(newBoardRouter);
+  require('../board/activeBoardRouter.js')(activeBoardRouter);
   require('../board/boardRouter.js')(boardRouter, io);
 
 };

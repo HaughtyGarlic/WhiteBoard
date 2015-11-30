@@ -1,2 +1,15 @@
-<h1>Coderboard</h1>
-<button ng-click="newRoom()">Start Whiteboarding Now</button>
+<div class="lobby-container" layout="column" layout-align="start center">
+	<h1 id='lobbyTitle'>Coderboard</h1>
+	<div class="newRoomLobby" layout="row" layout-align="center center">
+		<md-input-container>
+      <label>Create new board</label>
+      <input ng-model="newRoomName">
+    </md-input-container>
+		<a ng-click="newRoom()"><md-icon class="md-accent" md-svg-icon="assets/images/icons/ic_add_circle_outline_black_24px.svg"></md-icon></a>
+	</div>
+	<div class="existingRoomLobby" ng-repeat="room in activeRooms">
+		<div ng-click="getRoom($index)">
+			<h2>{{room.name}}</h2>
+		</div>
+	</div>
+</div>

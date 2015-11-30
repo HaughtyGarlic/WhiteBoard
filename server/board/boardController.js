@@ -6,7 +6,7 @@ module.exports = {
 
   createBoard: function (req, res, next) {
     console.log('about to create board');
-    var board = new Board.boardModel({strokes: []});
+    var board = new Board.boardModel({name: req.body.name, strokes: []});
     var id = board._id.toString();
     board.save(function(err, board) {
       if (err) { console.error('error creating board',err); }
@@ -41,6 +41,21 @@ module.exports = {
         //res.sendFile(path.join(__dirname,'../../public/board.html'));
         // res.redirect('/#/room/'+id);
         res.send({id:id, board:board});
+      }
+    });
+
+  },
+
+  getActiveBoards: function (req, res, next) {
+
+    Board.boardModel.find({name: { $ne: null }})
+    .select('_id name')
+    .exec(function(err, boards) {
+      console.log(err, boards);
+      if (err) {
+        console.log('i am an error',err);
+      } else {
+        res.send(boards);
       }
     });
 

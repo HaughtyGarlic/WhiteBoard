@@ -16,7 +16,11 @@ angular.module('app', [
 	'ngAnimate'
 ])
 
-.config(function ($stateProvider, $urlRouterProvider) {
+.config(function ($stateProvider, $urlRouterProvider, $mdThemingProvider) {
+  $mdThemingProvider.theme('default')
+    .primaryPalette('red')
+    .accentPalette('grey');
+
   $stateProvider
   .state('lobby', {
     url: '/lobby',

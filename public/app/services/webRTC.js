@@ -10,13 +10,18 @@ angular.module('webRTC', [])
 
 	  localVideoEl: 'localVideo',
 	  remoteVideosEl: 'remoteVideos',
-	  autoRequestMedia: false,
+	  autoRequestMedia: true,
+    // autoRequestMedia: false,
 	  receiveMedia: {
 	      mandatory: {
 	          OfferToReceiveAudio: false,
-	          OfferToReceiveVideo: false
+	          OfferToReceiveVideo: true
 	      }
 	  },
+    media: {
+      video: true,
+      audio: false
+    },
 	  url: '104.131.154.76:8888'
 	});
 

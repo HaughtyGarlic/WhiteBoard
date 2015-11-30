@@ -1,15 +1,24 @@
 <div class="content-container">
-  <md-toolbar class="md-warn md-hue-2">
+  <md-toolbar class="md-primary" layout="row">
+    <div>
+      <h1 layout-align="center center" layout="row">
+        <a href="/" target="_self" id="homeLink">//coderboard</a>
+      </h1>
+    </div>
     <div class="md-toolbar-tools" layout="row" flex layout-wrap>
-        
-				<video id="localVideo"></video>
-				<div id="remoteVideos"></div>
+        <div class="webcam-container" flex="70" layout="row">
+          <video id="localVideo"></video>
+          <div id="remoteVideos"></div>
+        </div>
 
-        <audio controls autoplay preload="auto"></audio>
 
-        <md-button class="md-primary" aria-label="PlaylistButton" ng-click="showPlaylist($event)">
-          <md-icon md-menu-origin md-svg-icon="assets/images/icons/ic_queue_music_white_24px.svg"></md-icon>
-        </md-button>
+        <div class="radio-container" flex="30" layout="row" layout-align="end center">
+          <audio controls autoplay preload="auto"></audio>
+
+          <md-button class="md-primary" aria-label="PlaylistButton" ng-click="showPlaylist($event)">
+            <md-icon md-menu-origin md-svg-icon="assets/images/icons/ic_queue_music_white_24px.svg"></md-icon>
+          </md-button>
+        </div>
 
     	</div>
     </div>

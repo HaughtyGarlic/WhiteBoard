@@ -6,8 +6,6 @@ angular.module('whiteboard.broadcast', [])
       controller: 'BroadcastController',
       link: function (scope, element, attr) {
 
-        console.log('hi from broadcast');
-
         var board = element.find('canvas');
 
         board.on('mousedown', mouseDown);
@@ -44,70 +42,93 @@ angular.module('whiteboard.broadcast', [])
       controller: 'BroadcastController',
       link: function (scope, element, attr) {
 
-        console.log('hi from receive');
-
         var board = element.find('canvas');
-        var context = board[0].getContext("2d");
-        var last = null;
-        var pen = {};
+        var users = {};
 
-        function getPen() {
-          for (var penProperty in pen) {
-            context[penProperty] = pen[penProperty];
+        var Player = function (userid) {
+          this.userid = userid;
+          this.pen = {};
+          this.last = null;
+          this.context = board[0].getContext("2d");
+        };
+
+        Player.prototype.getPen = function () {
+          for (var penProperty in this.pen) {
+            this.context[penProperty] = this.pen[penProperty];
           }
-        }
+        };
 
-        function draw(from, to) {
-          getPen();
-          context.beginPath();
-          context.moveTo(from[0], from[1]);
-          context.lineTo(to[0], to[1]);
-          context.stroke();
-        }
+        Player.prototype.draw = function (from, to) {
+          this.getPen();
+          this.context.beginPath();
+          this.context.moveTo(from[0], from[1]);
+          this.context.lineTo(to[0], to[1]);
+          this.context.stroke();
+        };
 
         Room.getRoom($location.path())
-        .then(function (data) {
-          socket.init(data.id);
-          socket.on('end', function () {
-            last = null;
-          });
+          .then(function (data) {
+            socket.init(data.id);
 
-          socket.on('drag', function (data) {
-            pen = data.pen;
-            var current = data.coords;
-            console.log('other user drawing:' + current);
-            last = last === null ? current : last;
-            draw(last, current);
-            last = current;
-          });
+            socket.on('userJoin', function (data) {
+              var user = new Player(data.userid);
+              users[data.userid] = user;
+            });
 
-          socket.on('join', function (board) {
-            console.log("Joining the board.");
-            // Check for null board data.
-            if (!board) {
-              console.log('empty board');
-              return;
-            }
-            board.strokes.forEach(function (stroke) {
-              // Check for null stroke data.
-              if (!stroke || stroke.path.length < 2) {
+            socket.on('userLeave', function (data) {
+              if (users[data.userid]) {
+                delete users[data.userid];
+              }
+            });
+
+            socket.on('end', function (data) {
+              var user = users[data.userid];
+              user.last = null;
+            });
+
+            socket.on('drag', function (data) {
+              var user = users[data.userid];
+              user.pen = data.pen;
+              var current = data.coords;
+              user.last = user.last === null ? current : user.last;
+              user.draw(user.last, current);
+              user.last = current;
+            });
+
+            socket.on('join', function (data) {
+
+              // Check for null data.
+              if (!data) {
+                console.log('empty board');
                 return;
               }
-              pen = stroke.pen;
 
-              //draw path
-              stroke.path.reduce(function (from, to) {
-                console.log(from, to);
-                draw(from, to);
-                return to;
+              // GET OTHER PLAYERS
+              data.users.forEach(function (userid) {
+                users[userid] = new Player(userid);
               });
 
+              var writeHistory = new Player();
+
+              data.board.strokes.forEach(function (stroke) {
+                // Check for null stroke data.
+                if (!stroke || stroke.path.length < 2) {
+                  return;
+                }
+                writeHistory.pen = stroke.pen;
+
+                //draw path
+                stroke.path.reduce(function (from, to) {
+                  writeHistory.draw(from, to);
+                  return to;
+                });
+
+              });
             });
+          })
+          .catch(function (err) {
+            console.error(err);
           });
-        })
-        .catch(function(err) {
-          console.error(err);
-        })
       }
     };
   });

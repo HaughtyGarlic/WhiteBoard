@@ -8,26 +8,36 @@ var Board = require('../../db/board');
 // **boardUrl:** *String* <br>
 // **board:** *Mongoose board model* <br>
 // **io:** *Export of our Socket.io connection from [server.js](../documentation/server.html)*
-var connect = function(boardUrl, board, io) {
+var connect = function (boardUrl, board, io) {
   // Set the Socket.io namespace to the boardUrl.
   var whiteboard = io.of(boardUrl);
   console.log('socket triggered on get board');
   // console.log(boardUrl, board, io);
 
-  whiteboard.on('connection', function(socket) {
+  whiteboard.once('connection', function (socket) {
     // Send the current state of the board to the client immediately on joining.
+    var payload = {
+      users: [],
+      board: board
+    };
 
-    console.log('imcoming socket from: '+socket.id);
-
-    socket.emit('join', board);
+    for (var clientid in socket.conn.server.clients) {
+      payload.users.push(clientid);
+    }
+    // send the users currently drawing
+    socket.emit('join', payload);
+    // alert other players that a new user has joined
+    socket.broadcast.emit('userJoin', {
+      userid: socket.id
+    });
 
     //if there is only one person on the socket, emit a message to tell them they are the dj
-    console.log('ppl in room: '+socket.conn.server.clientsCount);
+    console.log('ppl in room: ' + socket.conn.server.clientsCount);
     // if(Number(socket.conn.server.clientsCount) === 1) {
     //   socket.emit('you_are_the_master', null);
     // }
 
-    socket.on('start', function(pen) {
+    socket.on('start', function (pen) {
 
       // **A stroke is essentially a continous line drawn by the user.**
       socket.stroke = {
@@ -36,14 +46,15 @@ var connect = function(boardUrl, board, io) {
       };
     });
 
-    socket.on('drag', function(coords) {
+    socket.on('drag', function (coords) {
       //Push coordinates into the stroke's drawing path.
       socket.stroke.path.push(coords);
       // This payload will be sent back to all sockets *except the socket
       // that initiated the draw event.*
       var payload = {
         pen: socket.stroke.pen,
-        coords: coords
+        coords: coords,
+        userid: socket.id
       };
 
       //Broadcast new line coords to everyone but the person who drew it.
@@ -51,26 +62,45 @@ var connect = function(boardUrl, board, io) {
     });
 
     //When stroke is finished, add it to our db.
-    socket.on('end', function() {
+    socket.on('end', function () {
       var finishedStroke = socket.stroke;
 
       //Get the board that the socket is connected to.
       var id = socket.nsp.name.slice(1);
 
       //Update the board with the new stroke.
-      Board.boardModel.update({_id: id},{$push: {strokes: finishedStroke} },{upsert:true},function(err, board){
-        if(err){ console.log(err); }
-        else {
+      Board.boardModel.update({
+        _id: id
+      }, {
+        $push: {
+          strokes: finishedStroke
+        }
+      }, {
+        upsert: true
+      }, function (err, board) {
+        if (err) {
+          console.log(err);
+        } else {
           console.log("Successfully added");
         }
       });
 
       // Emit end event to everyone but the person who stopped drawing.
-      socket.broadcast.emit('end', null);
+      socket.broadcast.emit('end', {
+        userid: socket.id
+      });
 
       //Delete the stroke object to make room for the next stroke.
       delete socket.stroke;
     });
+
+    socket.on('disconnect', function () {
+      // console.log(socket.id + 'has disconnected');
+      socket.broadcast.emit('userLeave', {
+        userid: socket.id
+      });
+    });
+
 
     // socket.on('music_play_all', function(data) {
     //   console.log('someone REALLY loves this shit');
@@ -96,7 +126,7 @@ var connect = function(boardUrl, board, io) {
     //   console.log('i know whats happening in this room');
     //   socket.broadcast.emit('music_status', data);
     // });
-    
+
   });
 };
 

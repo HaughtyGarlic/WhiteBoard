@@ -40,8 +40,8 @@ angular.module('webRTC', [])
         audioVar.pause();
       }
       songQueue.setSongQueue(data.payload.songQueue);
-      if(audioVar.src !== audio.getTrackURL(data.payload.songQueue[0].stream_url)) {
-        audio.setTrack(data.payload.songQueue[0].stream_url)
+      if(audioVar.src !== audio.getTrackURL(data.payload.songQueue[0])) {
+        audio.setTrack(data.payload.songQueue[0])
       }
       updatePlayerTime(data.payload);
     } else if (data.type === 'offer') {
@@ -57,7 +57,7 @@ angular.module('webRTC', [])
     
     console.log('current audio src', audioVar.src);
     if(!audioVar.src) {
-      audio.setTrack(data.songQueue[0].stream_url);
+      audio.setTrack(data.songQueue[0]);
     }
 
     audioVar.currentTime = data.currentTime + transTime/1000;

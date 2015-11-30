@@ -21,18 +21,21 @@ angular.module('audio', [])
   };
 
   this.setTrack = function(trackUrl) {
-    if(!trackUrl) {
-      _audio.src = '';
-    } else {
+    // if(!trackUrl.stream_url) {
+    //   _audio.src = '';
+    // } else {
       var url = this.getTrackURL(trackUrl);
       console.log(url);
     	_audio.src = url;
-    }
+    // }
 
   };
 
   this.getTrackURL = function(trackUrl) {
     console.log(trackUrl);
+    if(!trackUrl) {
+      return '';
+    }
     return trackUrl.stream_url+'?client_id=9e3abdceafbd5ef113b3430508a34c92';
   };
 

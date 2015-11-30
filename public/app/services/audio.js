@@ -32,7 +32,8 @@ angular.module('audio', [])
   };
 
   this.getTrackURL = function(trackUrl) {
-    return trackUrl+'?client_id=9e3abdceafbd5ef113b3430508a34c92';
+    console.log(trackUrl);
+    return trackUrl.stream_url+'?client_id=9e3abdceafbd5ef113b3430508a34c92';
   };
 
   this.isPaused = function() {

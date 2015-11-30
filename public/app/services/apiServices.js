@@ -4,11 +4,29 @@ angular.module('apiServices', [])
 
 .service('Lobby', function ($http) {
 
-  this.newRoom = function () {
+  this.newRoom = function (name) {
+
+    return $http({
+      method: 'POST',
+      url: '/new',
+      data: {name: name}
+    })
+    .then(function (res) {
+      console.log(res)
+      return res.data;
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+    ;
+
+  };
+
+  this.getActiveRooms = function () {
 
     return $http({
       method: 'GET',
-      url: '/new'
+      url: '/active'
     })
     .then(function (res) {
       console.log(res)

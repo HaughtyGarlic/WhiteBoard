@@ -49,9 +49,10 @@ module.exports = {
   getActiveBoards: function (req, res, next) {
 
     Board.boardModel.find({name: { $ne: null }})
-    .select('_id name')
+    .select('_id name activeUsers')
+    .sort({activeUsers: -1})
     .exec(function(err, boards) {
-      console.log(err, boards);
+      // console.log(err, boards);
       if (err) {
         console.log('i am an error',err);
       } else {

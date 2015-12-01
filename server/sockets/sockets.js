@@ -31,11 +31,27 @@ var connect = function (boardUrl, board, io) {
       userid: socket.id
     });
 
+    var id = socket.nsp.name.slice(1);
+
     //if there is only one person on the socket, emit a message to tell them they are the dj
-    console.log('ppl in room: ' + socket.conn.server.clientsCount);
-    // if(Number(socket.conn.server.clientsCount) === 1) {
-    //   socket.emit('you_are_the_master', null);
-    // }
+    console.log('ppl in room after join: '+socket.conn.server.clientsCount);
+
+    var updateActiveUsers = function() {
+      Board.boardModel.update({_id: id},{activeUsers: socket.conn.server.clientsCount},function(err, board){
+        if(err){ console.log(err); }
+        else {
+          console.log("Successfully updated active user count");
+        }
+      });
+    }
+
+    updateActiveUsers();
+   
+
+    socket.on('disconnect', function () {
+      console.log('ppl in room after disconnect: '+socket.conn.server.clientsCount);
+      updateActiveUsers();
+    });
 
     socket.on('start', function (pen) {
 
@@ -100,33 +116,6 @@ var connect = function (boardUrl, board, io) {
         userid: socket.id
       });
     });
-
-
-    // socket.on('music_play_all', function(data) {
-    //   console.log('someone REALLY loves this shit');
-    //   socket.emit('music_play', data);
-    // });
-
-    // socket.on('music_play', function(data) {
-    //   console.log('someone loves this shit');
-    //   socket.broadcast.emit('music_play', data);
-    // });
-
-    // socket.on('music_pause', function(data) {
-    //   console.log('somone HATES this shit');
-    //   socket.broadcast.emit('music_pause', data);
-    // });
-
-    // socket.on('music_request_status', function() {
-    //   console.log('some noob just got to the room');
-    //   socket.broadcast.emit('music_request_status', null);
-    // });
-
-    // socket.on('music_status', function(data) {
-    //   console.log('i know whats happening in this room');
-    //   socket.broadcast.emit('music_status', data);
-    // });
-
   });
 };
 

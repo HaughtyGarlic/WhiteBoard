@@ -5,11 +5,18 @@
       <label>Create new board</label>
       <input ng-model="newRoomName">
     </md-input-container>
-		<a ng-click="newRoom()"><md-icon class="md-accent" md-svg-icon="assets/images/icons/ic_add_circle_outline_black_24px.svg"></md-icon></a>
+		<a ng-click="newRoom()"><md-icon md-svg-icon="assets/images/icons/ic_add_circle_outline_black_24px.svg"></md-icon></a>
 	</div>
 	<div class="existingRoomLobby" ng-repeat="room in activeRooms">
 		<div ng-click="getRoom($index)">
-			<h2>{{room.name}}</h2>
+			<h2 ng-style="{'color':(room.activeUsers>0?'red':'black')}"layout="row">
+				{{room.name}}
+				<span ng-show="room.activeUsers>0" layout="row">
+					<div ng-repeat="thing in getNumber(room.activeUsers) track by $index">
+						<md-icon md-svg-icon="assets/images/icons/ic_face_black_24px.svg"></md-icon>
+					</div>
+				</span>
+			</h2>
 		</div>
 	</div>
 </div>

@@ -21,8 +21,8 @@ angular.module('webRTC', [])
     media: {
       video: true,
       audio: false
-    },
-	  url: '104.131.154.76:8888'
+    }
+	  // url: '104.131.154.76:8888'
 	});
 
 	webrtc.on('joinedRoom', function () {

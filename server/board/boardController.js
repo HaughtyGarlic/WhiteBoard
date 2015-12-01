@@ -34,7 +34,7 @@ module.exports = {
       } else {
         // Invoke [request handler](../documentation/sockets.html) for a new socket connection
         // with board id as the Socket.io namespace.
-        console.log('board id', board);
+        //console.log('board id', board);
         console.log('req.url: ', req.url);
         handleSocket(req.url, board, req.io);
         // Send back whiteboard html template.

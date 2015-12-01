@@ -21,7 +21,7 @@ var connect = function (boardUrl, board, io) {
       board: board
     };
 
-    for (var clientid in socket.conn.server.clients) {
+    for (var clientid in whiteboard.connected) {
       payload.users.push(clientid);
     }
     // send the users currently drawing
@@ -34,10 +34,10 @@ var connect = function (boardUrl, board, io) {
     var id = socket.nsp.name.slice(1);
 
     //if there is only one person on the socket, emit a message to tell them they are the dj
-    console.log('ppl in room after join: '+socket.conn.server.clientsCount);
+    console.log('ppl in room after join: '+Object.keys(whiteboard.connected).length);
 
     var updateActiveUsers = function() {
-      Board.boardModel.update({_id: id},{activeUsers: socket.conn.server.clientsCount},function(err, board){
+      Board.boardModel.update({_id: id},{activeUsers: Object.keys(whiteboard.connected).length},function(err, board){
         if(err){ console.log(err); }
         else {
           console.log("Successfully updated active user count");
@@ -47,11 +47,6 @@ var connect = function (boardUrl, board, io) {
 
     updateActiveUsers();
    
-
-    socket.on('disconnect', function () {
-      console.log('ppl in room after disconnect: '+socket.conn.server.clientsCount);
-      updateActiveUsers();
-    });
 
     socket.on('start', function (pen) {
 
@@ -115,6 +110,9 @@ var connect = function (boardUrl, board, io) {
       socket.broadcast.emit('userLeave', {
         userid: socket.id
       });
+
+      console.log('ppl in room after disconnect: '+Object.keys(whiteboard.connected).length);
+      updateActiveUsers();
     });
   });
 };

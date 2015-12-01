@@ -8,6 +8,7 @@ var db = require('./config');
 var boardSchema = new mongoose.Schema({
   id: String,
   name: String,
+  activeUsers: Number,
   strokes: Array
 });
 

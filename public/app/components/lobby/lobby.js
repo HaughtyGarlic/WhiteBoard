@@ -33,4 +33,8 @@ angular.module('lobby', [])
 
   $scope.getActiveRooms();
 
+  $scope.getNumber = function(num) {
+      return new Array(num);   
+  }
+
 });

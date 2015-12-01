@@ -12,12 +12,12 @@ angular.module('webRTC', [])
 	  remoteVideosEl: 'remoteVideos',
 	  autoRequestMedia: true,
     // autoRequestMedia: false,
-	  receiveMedia: {
-	      mandatory: {
-	          OfferToReceiveAudio: false,
-	          OfferToReceiveVideo: true
-	      }
-	  },
+	  // receiveMedia: {
+	  //     mandatory: {
+	  //         OfferToReceiveAudio: false,
+	  //         OfferToReceiveVideo: true
+	  //     }
+	  // },
     media: {
       video: true,
       audio: false

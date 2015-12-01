@@ -34,7 +34,7 @@ module.exports = {
       } else {
         // Invoke [request handler](../documentation/sockets.html) for a new socket connection
         // with board id as the Socket.io namespace.
-        console.log('board id', board);
+        //console.log('board id', board);
         console.log('req.url: ', req.url);
         handleSocket(req.url, board, req.io);
         // Send back whiteboard html template.
@@ -49,9 +49,10 @@ module.exports = {
   getActiveBoards: function (req, res, next) {
 
     Board.boardModel.find({name: { $ne: null }})
-    .select('_id name')
+    .select('_id name activeUsers')
+    .sort({activeUsers: -1})
     .exec(function(err, boards) {
-      console.log(err, boards);
+      // console.log(err, boards);
       if (err) {
         console.log('i am an error',err);
       } else {
